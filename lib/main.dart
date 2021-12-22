@@ -2,9 +2,7 @@ import 'package:awesome_app/awesome_app.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
-import 'network/api/api_service.dart';
-import 'network/models/photos_model.dart';
+import 'package:provider_module/providers/photos_provider.dart';
 
 void main() {
   runApp(const MyApp());

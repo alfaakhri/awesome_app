@@ -34,6 +34,14 @@ dependencies:
   google_fonts: ^2.1.0
   provider: ^6.0.1
 
+  # This is our modular form git
+  network_module:
+   git: "https://github.com/alfaakhri/network_module"
+  repository_module:
+   git: "https://github.com/alfaakhri/repository_module"
+  provider_module:
+   git: "https://github.com/alfaakhri/provider_module"
+
 dev_dependencies:
   flutter_lints: ^1.0.0
   flutter_test:

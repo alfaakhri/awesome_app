@@ -151,6 +151,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  network_module:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: bcdd70e3a0ebca759c8763cadcd268cc81ca537d
+      url: "https://github.com/alfaakhri/network_module"
+    source: git
+    version: "0.0.1"
   path:
     dependency: transitive
     description:
@@ -235,6 +244,24 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.1"
+  provider_module:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: a0023da929f70682e4edfae7b6192691f125a251
+      url: "https://github.com/alfaakhri/provider_module"
+    source: git
+    version: "0.0.1"
+  repository_module:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: ace3ee18cfb2583550aea0c050966eff08d27861
+      url: "https://github.com/alfaakhri/repository_module"
+    source: git
+    version: "0.0.1"
   sky_engine:
     dependency: transitive
     description: flutter

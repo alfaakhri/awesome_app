@@ -1,6 +1,8 @@
 import 'package:awesome_app/awesome_app.dart';
 import 'package:flutter/material.dart';
+import 'package:network_module/network_module.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_module/providers/photos_provider.dart';
 
 class ListPhotosPage extends StatefulWidget {
   static const String routeName = '/list_photos_page';

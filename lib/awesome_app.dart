@@ -4,6 +4,8 @@
 // genexp
 
 export 'main.dart';
-export 'network/network.exports.dart';
-export 'provider/provider.exports.dart';
 export 'ui/ui.exports.dart';
+
+export 'package:network_module/network_module.dart';
+export 'package:provider_module/provider_module.dart';
+export 'package:repository_module/repository_module.dart';

@@ -2,7 +2,6 @@ import 'package:awesome_app/awesome_app.dart';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DetailPhotosPage extends StatefulWidget {
   static const String routeName = "/detail_photos_page";
