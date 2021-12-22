@@ -13,10 +13,18 @@ class ListPhotosPage extends StatefulWidget {
 }
 
 class _ListPhotosPageState extends State<ListPhotosPage> {
+  static const int PAGE_SIZE = 6;
+
   @override
   void initState() {
     super.initState();
     ApiService().getListPhotos(5, 1);
+    var photos = context.read<PhotosProvider>();
+    Future.microtask(() {
+      photos.setPageIndex(0);
+      photos.clearDataPhotosPaging();
+      photos.fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * photos.pageIndex);
+    });
   }
 
   Widget _buildBody(BuildContext context) {
@@ -32,13 +40,13 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
           return ErrorHandlingWidget(
               message: state.message,
               onPressed: () {
-                context.read<PhotosProvider>().fetchListPhotos(5, 1);
+                context.read<PhotosProvider>().fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * state.pageIndex);
               });
         } else if (state.status == Status.failed) {
           return ErrorHandlingWidget(
               message: state.message,
               onPressed: () {
-                context.read<PhotosProvider>().fetchListPhotos(5, 1);
+                context.read<PhotosProvider>().fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * state.pageIndex);
               });
         } else {
           return const Center(child: Text(''));
@@ -107,30 +115,51 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
                   //     )),
                 ],
               ),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: listPhotos.length,
-                itemBuilder: (context, index) {
-                  return ItemPhotoList(
-                    photos: listPhotos[index],
-                  );
-                },
-              ),
-              GridView.builder(
-                itemCount: listPhotos.length,
-                itemBuilder: (context, index) {
-                  return ItemPhotoGrid(photos: listPhotos[index]);
-                },
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 180, //MENGATUR BESARNYA ELEMEN GRID PER ITEMNYA,
-                  childAspectRatio: 0.8, //MENGATUR ASPEK RASIO
-                  crossAxisSpacing: 15, //MENGATUR JARAK ELEMENT SECARA HORIZONTAL
-                  mainAxisSpacing: 5, //MENGATUR JARAK ELEMENT SECARA VERTICAL
-                ),
-                shrinkWrap: true,
-              ),
+              provider.isGrid
+                  ? Container()
+                  : (!provider.hasMore && listPhotos.isEmpty && (provider.pageIndex == 0))
+                      ? Center(
+                          child: ErrorHandlingWidget(
+                            message: "Photos Not Available",
+                            onPressed: () {},
+                          ),
+                        )
+                      : ListView.builder(
+                          // Need to display a loading tile if more items are coming
+                          itemCount:
+                              provider.hasMore ? listPhotos.length + 1 : listPhotos.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            // Uncomment the following line to see in real time how ListView.builder works
+                            // print('ListView.builder is building index $index');
+                            if (index >= listPhotos.length) {
+                              // Don't trigger if one async loading is already under way
+                              if (!provider.isLoading) {
+                                provider.fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * provider.pageIndex);
+                              }
+                              return const Center(child: Text('Loading...', style: TextStyle(color: secondaryColor)));
+                            }
+
+                            return ItemPhotoList(
+                              photos: listPhotos[index],
+                            );
+                          },
+                        ),
+              provider.isGrid
+                  ? GridView.builder(
+                      itemCount: listPhotos.length,
+                      itemBuilder: (context, index) {
+                        return ItemPhotoGrid(photos: listPhotos[index]);
+                      },
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 180, //MENGATUR BESARNYA ELEMEN GRID PER ITEMNYA,
+                        childAspectRatio: 0.8, //MENGATUR ASPEK RASIO
+                        crossAxisSpacing: 15, //MENGATUR JARAK ELEMENT SECARA HORIZONTAL
+                        mainAxisSpacing: 5, //MENGATUR JARAK ELEMENT SECARA VERTICAL
+                      ),
+                      shrinkWrap: true,
+                    )
+                  : Container(),
             ],
           ),
         ),

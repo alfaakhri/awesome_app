@@ -47,6 +47,7 @@ class ItemPhotoList extends StatelessWidget {
                     photos.src!.landscape!,
                   ).image,
                   height: 175,
+                  width: size.width,
                   fit: BoxFit.cover,
                 ),
               ),
