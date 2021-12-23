@@ -3,35 +3,39 @@ import 'package:flutter/material.dart';
 
 class ItemPhotoGrid extends StatelessWidget {
   final Photos photos;
-  const ItemPhotoGrid({Key? key, required this.photos}) : super(key: key);
+  final bool isFromDetail;
+  const ItemPhotoGrid({Key? key, required this.photos, required this.isFromDetail}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     ThemeData themeData = Theme.of(context);
+    var pageRoute = PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 1000),
+      pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+        return DetailPhotosPage(
+          photos: photos,
+        );
+      },
+      transitionsBuilder:
+          (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+        return Align(
+          child: FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
+      },
+    );
 
     return InkWell(
       key: const Key("detail_restaurant_page"),
       onTap: () {
-        Navigator.of(context).push(
-          PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 1000),
-            pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-              return DetailPhotosPage(
-                photos: photos,
-              );
-            },
-            transitionsBuilder: (BuildContext context, Animation<double> animation,
-                Animation<double> secondaryAnimation, Widget child) {
-              return Align(
-                child: FadeTransition(
-                  opacity: animation,
-                  child: child,
-                ),
-              );
-            },
-          ),
-        );
+        if (isFromDetail) {
+          Navigator.of(context).pushReplacement(pageRoute);
+        } else {
+          Navigator.of(context).push(pageRoute);
+        }
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),

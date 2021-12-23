@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const int PAGE_SIZE = 10;
+const int PAGE_SIZE = 5;
 const Color primaryColor = Color(0xFFFFFFFF);
 const Color secondaryColor = Color(0xFFfbd1a2);
 final TextTheme myTextTheme = TextTheme(

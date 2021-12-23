@@ -180,7 +180,7 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
                                 }
                                 return const Center(child: Text('Loading...', style: TextStyle(color: secondaryColor)));
                               }
-                              return ItemPhotoGrid(photos: listPhotos[index]);
+                              return ItemPhotoGrid(photos: listPhotos[index], isFromDetail: false,);
                             },
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
