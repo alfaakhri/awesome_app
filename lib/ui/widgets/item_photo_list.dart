@@ -9,7 +9,6 @@ class ItemPhotoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    bool isGrid = context.read<PhotosProvider>().isGrid;
     ThemeData themeData = Theme.of(context);
 
     return InkWell(

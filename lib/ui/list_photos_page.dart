@@ -17,12 +17,16 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
   @override
   void initState() {
     super.initState();
-    var photos = context.read<PhotosProvider>();
     Future.microtask(() {
-      photos.setPageIndex(0);
-      photos.clearDataPhotosPaging();
-      photos.fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * photos.pageIndex);
+      fetchListPhotos();
     });
+  }
+
+  void fetchListPhotos() {
+    var photos = context.read<PhotosProvider>();
+    photos.setPageIndex(0);
+    photos.clearDataPhotosPaging();
+    photos.fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * photos.pageIndex);
   }
 
   Widget _buildBody(BuildContext context) {
@@ -44,9 +48,7 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
                 return ErrorHandlingWidget(
                     message: state.message,
                     onPressed: () {
-                      state.setPageIndex(0);
-                      state.clearDataPhotosPaging();
-                      state.fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * state.pageIndex);
+                      fetchListPhotos();
                     });
               } else {
                 return _buildList(themeData, state.listPhotos!, state);
@@ -57,10 +59,7 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
           return ErrorHandlingWidget(
               message: "No Have Internet",
               onPressed: () {
-                var photos = context.read<PhotosProvider>();
-                photos.setPageIndex(0);
-                photos.clearDataPhotosPaging();
-                photos.fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * photos.pageIndex);
+                fetchListPhotos();
               });
         }
       },
@@ -71,9 +70,7 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
   Widget _buildList(ThemeData themeData, List<Photos> listPhotos, PhotosProvider provider) {
     return RefreshIndicator(
       onRefresh: () async {
-        provider.setPageIndex(0);
-        provider.clearDataPhotosPaging();
-        provider.fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * provider.pageIndex);
+        fetchListPhotos();
         await Future.value({});
       },
       child: Material(
@@ -89,9 +86,7 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
                     child: IconButton(
                         onPressed: () {
                           provider.setIsGrid();
-                          provider.setPageIndex(0);
-                          provider.clearDataPhotosPaging();
-                          provider.fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * provider.pageIndex);
+                          fetchListPhotos();
                         },
                         icon: Icon(
                           (provider.isGrid) ? Icons.grid_view_sharp : Icons.list,
@@ -136,9 +131,7 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
                             child: ErrorHandlingWidget(
                                 message: provider.message,
                                 onPressed: () {
-                                  provider.setPageIndex(0);
-                                  provider.clearDataPhotosPaging();
-                                  provider.fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * provider.pageIndex);
+                                  fetchListPhotos();
                                 }))
                         : ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
@@ -165,9 +158,7 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
                             child: ErrorHandlingWidget(
                                 message: provider.message,
                                 onPressed: () {
-                                  provider.setPageIndex(0);
-                                  provider.clearDataPhotosPaging();
-                                  provider.fetchListPhotos(limit: PAGE_SIZE, offset: PAGE_SIZE * provider.pageIndex);
+                                  fetchListPhotos();
                                 }))
                         : GridView.builder(
                             itemCount: provider.hasMore ? listPhotos.length + 1 : listPhotos.length,
@@ -180,7 +171,10 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
                                 }
                                 return const Center(child: Text('Loading...', style: TextStyle(color: secondaryColor)));
                               }
-                              return ItemPhotoGrid(photos: listPhotos[index], isFromDetail: false,);
+                              return ItemPhotoGrid(
+                                photos: listPhotos[index],
+                                isFromDetail: false,
+                              );
                             },
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -206,7 +200,7 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
       // endDrawer: DrawerWidget(),
       body: Container(
         decoration:
-            BoxDecoration(image: DecorationImage(image: AssetImage('assets/background.jpg'), fit: BoxFit.cover)),
+            const BoxDecoration(image: DecorationImage(image: AssetImage('assets/background.jpg'), fit: BoxFit.cover)),
         child: _buildBody(context),
       ),
     );
