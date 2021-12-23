@@ -40,6 +40,7 @@ dependencies:
     git: https://github.com/alfaakhri/provider_module
   repository_module:
     git: https://github.com/alfaakhri/repository_module
+  url_launcher: ^6.0.17
 
 dev_dependencies:
   flutter_lints: ^1.0.0
