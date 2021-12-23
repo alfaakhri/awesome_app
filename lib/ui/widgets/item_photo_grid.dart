@@ -37,19 +37,16 @@ class ItemPhotoGrid extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Stack(
           children: [
-            Hero(
-              tag: photos.id!,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: FadeInImage(
-                  placeholder: const AssetImage('assets/image-not-found.png'),
-                  image: Image.network(
-                    photos.src!.portrait!,
-                  ).image,
-                  height: 175,
-                  width: size.width,
-                  fit: BoxFit.cover,
-                ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: FadeInImage(
+                placeholder: const AssetImage('assets/image-not-found.png'),
+                image: Image.network(
+                  photos.src!.portrait!,
+                ).image,
+                height: 175,
+                width: size.width,
+                fit: BoxFit.cover,
               ),
             ),
             Positioned(

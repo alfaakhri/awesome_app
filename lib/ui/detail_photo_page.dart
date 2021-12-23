@@ -1,5 +1,6 @@
 import 'package:awesome_app/awesome_app.dart';
 import 'dart:math';
+import 'package:provider/provider.dart';
 
 import 'package:flutter/material.dart';
 
@@ -113,7 +114,6 @@ class _DetailPhotosPageState extends State<DetailPhotosPage> {
                                     style: themeData.textTheme.subtitle2?.copyWith(color: Colors.black26)),
                               ],
                             ),
-                            
                           ],
                         ),
                       ],
@@ -159,6 +159,87 @@ class _DetailPhotosPageState extends State<DetailPhotosPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildBody());
+    ThemeData themeData = Theme.of(context);
+    var photos = context.read<PhotosProvider>();
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 200.0,
+              floating: false,
+              pinned: true,
+              backgroundColor: secondaryColor,
+              elevation: 0.0,
+              flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  background: FadeInImage(
+                    placeholder: const AssetImage('assets/image-not-found.png'),
+                    image: Image.network(
+                      widget.photos.src!.landscape!,
+                    ).image,
+                    fit: BoxFit.cover,
+                  )),
+            ),
+          ];
+        },
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 80, 20, 20),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.person, size: 24, color: Colors.grey.shade400),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        widget.photos.photographer!,
+                        style: themeData.textTheme.headline6?.copyWith(color: Colors.black),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    widget.photos.alt!,
+                    style: themeData.textTheme.bodyText1,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "More photos",
+                    style: themeData.textTheme.headline6,
+                  ),
+                  const SizedBox(height: 5),
+                  GridView.builder(
+                    itemCount: photos.listPhotos!.length,
+                    itemBuilder: (context, index) {
+                      if (photos.listPhotos![index].id != widget.photos.id) {
+                        return ItemPhotoGrid(photos: photos.listPhotos![index]);
+                      }
+                      return Container();
+                    },
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 180, //MENGATUR BESARNYA ELEMEN GRID PER ITEMNYA,
+                      childAspectRatio: 0.8, //MENGATUR ASPEK RASIO
+                      crossAxisSpacing: 15, //MENGATUR JARAK ELEMENT SECARA HORIZONTAL
+                      mainAxisSpacing: 5, //MENGATUR JARAK ELEMENT SECARA VERTICAL
+                    ),
+                    shrinkWrap: true,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:awesome_app/awesome_app.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ItemPhotoList extends StatelessWidget {
   final Photos photos;
@@ -8,6 +9,7 @@ class ItemPhotoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    bool isGrid = context.read<PhotosProvider>().isGrid;
     ThemeData themeData = Theme.of(context);
 
     return InkWell(
@@ -36,20 +38,17 @@ class ItemPhotoList extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Stack(
-          children: [
-            Hero(
-              tag: photos.id!,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: FadeInImage(
-                  placeholder: const AssetImage('assets/image-not-found.png'),
-                  image: Image.network(
-                    photos.src!.landscape!,
-                  ).image,
-                  height: 175,
-                  width: size.width,
-                  fit: BoxFit.cover,
-                ),
+          children: [ 
+            ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: FadeInImage(
+                placeholder: const AssetImage('assets/image-not-found.png'),
+                image: Image.network(
+                  photos.src!.landscape!,
+                ).image,
+                height: 175,
+                width: size.width,
+                fit: BoxFit.cover,
               ),
             ),
             Positioned(

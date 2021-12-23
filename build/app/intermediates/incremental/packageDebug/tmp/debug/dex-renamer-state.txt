@@ -1,0 +1,4 @@
+#Thu Dec 23 16:32:26 WIB 2021
+base.0=/Users/macbook/Project/Evermos/awesome_app/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
