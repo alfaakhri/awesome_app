@@ -197,7 +197,6 @@ class _ListPhotosPageState extends State<ListPhotosPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // endDrawer: DrawerWidget(),
       body: Container(
         decoration:
             const BoxDecoration(image: DecorationImage(image: AssetImage('assets/background.jpg'), fit: BoxFit.cover)),
