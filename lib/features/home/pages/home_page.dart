@@ -1,6 +1,7 @@
 import 'package:awesome_app/features/photo_list/presentation/pages/photo_list_page.dart';
 import 'package:collapsible_app_bar/collapsible_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../managers/show_item_bloc.dart';
@@ -26,7 +27,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       body: CollapsibleAppBar(
-        onPressedBack: null,
+        onPressedBack: () {
+          // Menampilkan dialog konfirmasi keluar aplikasi
+          _showExitConfirmationDialog(context);
+        },
         shrinkTitle: 'Explore Photos',
         forceElevated: true,
         elevation: 10,
@@ -133,4 +137,33 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       ),
     );
   }
+}
+
+void _showExitConfirmationDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Exit App'),
+        content: const Text('Are you sure you want to exit the app?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              // Menutup dialog tanpa keluar aplikasi
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              // Menutup dialog dan keluar dari aplikasi
+              Navigator.of(context).pop();
+              SystemNavigator.pop(); // Keluar aplikasi
+            },
+            child: const Text('Exit'),
+          ),
+        ],
+      );
+    },
+  );
 }
