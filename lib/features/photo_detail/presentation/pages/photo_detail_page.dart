@@ -20,7 +20,7 @@ class PhotoDetailPage extends StatelessWidget {
           children: [
             Expanded(
               child: Image.network(
-                photo.url,
+                photo.src.large2X,
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
