@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 
 import 'core/api_clients.dart';
 import 'features/home/managers/show_item_bloc.dart';
+import 'features/photo_detail/data/services/photo_detail_service.dart';
+import 'features/photo_detail/domain/repository/photo_detail_repository.dart';
+import 'features/photo_detail/presentation/managers/photo_detail_bloc.dart';
 import 'features/photo_detail/presentation/pages/photo_detail_page.dart';
 import 'features/photo_list/data/models/photo_model.dart';
 import 'features/photo_list/data/services/photo_service.dart';
@@ -26,7 +29,10 @@ class MyApp extends StatelessWidget {
       headers: {'Authorization': '563492ad6f91700001000001768b3a098efb4912a758163e6ef35e51'},
     );
     final PhotoService photoService = PhotoService(apiClient: apiClient);
+    final PhotoDetailService photoDetailService = PhotoDetailService(apiClient: apiClient);
+
     final PhotoRepository photoRepository = PhotoRepository(photoService: photoService);
+    final PhotoDetailRepository photoDetailRepository = PhotoDetailRepository(photoService: photoDetailService);
 
     return MultiBlocProvider(
       providers: [
@@ -35,6 +41,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => PhotoBloc(photoRepository),
+        ),
+        BlocProvider(
+          create: (context) => PhotoDetailBloc(photoDetailRepository),
         ),
       ],
       child: MaterialApp.router(
@@ -55,7 +64,7 @@ class MyApp extends StatelessWidget {
               path: '/detail',
               builder: (context, state) {
                 final photo = state.extra as PhotoModel;
-                return PhotoDetailPage(photo: photo);
+                return PhotoDetailPage(photoId: photo.id);
               },
             ),
           ]),
