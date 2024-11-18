@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../photo_detail/presentation/pages/photo_detail_page.dart';
+import '../../data/models/photo_model.dart';
 import '../managers/photo_bloc.dart';
 import '../managers/photo_event.dart';
 import '../managers/photo_state.dart';
@@ -89,7 +90,7 @@ class _PhotoListPageState extends State<PhotoListPage> {
     );
   }
 
-  Widget _buildGridView(List photos, bool hasReachedMax) {
+  Widget _buildGridView(List<PhotoModel> photos, bool hasReachedMax) {
     return GridView.builder(
       controller: _scrollController,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -105,19 +106,20 @@ class _PhotoListPageState extends State<PhotoListPage> {
         }
         final photo = photos[index];
         return GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PhotoDetailPage(photo: photo),
-            ),
+          onTap: () => context.push(
+            '/detail',
+            extra: photo, // Pass PhotoModel as extra
           ),
-          child: PhotoItem(photo: photo), // Custom widget to display photo
+          child: PhotoItem(
+            imageUrl: photo.src.portrait,
+            photographerName: photo.photographer,
+          ), // Custom widget to display photo
         );
       },
     );
   }
 
-  Widget _buildListView(List photos, bool hasReachedMax) {
+  Widget _buildListView(List<PhotoModel> photos, bool hasReachedMax) {
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.all(8),
@@ -128,14 +130,17 @@ class _PhotoListPageState extends State<PhotoListPage> {
         }
         final photo = photos[index];
         return GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PhotoDetailPage(photo: photo),
-            ),
-          ),
-          child: PhotoItem(photo: photo), // Custom widget to display photo
-        );
+            onTap: () => context.push(
+                  '/detail',
+                  extra: photo, // Pass PhotoModel as extra
+                ),
+            child: SizedBox(
+              height: 250,
+              child: PhotoItem(
+                imageUrl: photo.src.landscape,
+                photographerName: photo.photographer,
+              ), // ), // Custom widget to display photo
+            ));
       },
     );
   }

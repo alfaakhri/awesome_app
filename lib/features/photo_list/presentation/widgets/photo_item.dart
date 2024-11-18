@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/photo_model.dart';
-
 class PhotoItem extends StatelessWidget {
-  final PhotoModel photo;
+  final String imageUrl;
+  final String photographerName;
 
-  const PhotoItem({Key? key, required this.photo}) : super(key: key);
+  const PhotoItem({Key? key, required this.imageUrl, required this.photographerName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,7 @@ class PhotoItem extends StatelessWidget {
         children: [
           Expanded(
             child: Image.network(
-              photo.url,
+              imageUrl,
               fit: BoxFit.cover,
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
@@ -29,7 +28,7 @@ class PhotoItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              photo.photographer,
+              photographerName,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.bold),
