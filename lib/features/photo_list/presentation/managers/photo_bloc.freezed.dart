@@ -17,24 +17,26 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PhotoEvent {
   String get category => throw _privateConstructorUsedError;
-  int get page => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String category, int page) loadPhotosByCategory,
     required TResult Function(String category, int page)
         loadMorePhotosByCategory,
+    required TResult Function(String category) loadPhotosFromLocal,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String category, int page)? loadPhotosByCategory,
     TResult? Function(String category, int page)? loadMorePhotosByCategory,
+    TResult? Function(String category)? loadPhotosFromLocal,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String category, int page)? loadPhotosByCategory,
     TResult Function(String category, int page)? loadMorePhotosByCategory,
+    TResult Function(String category)? loadPhotosFromLocal,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +45,7 @@ mixin _$PhotoEvent {
     required TResult Function(_LoadPhotosByCategory value) loadPhotosByCategory,
     required TResult Function(_LoadMorePhotosByCategory value)
         loadMorePhotosByCategory,
+    required TResult Function(_LoadPhotosFromLocal value) loadPhotosFromLocal,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,12 +53,14 @@ mixin _$PhotoEvent {
     TResult? Function(_LoadPhotosByCategory value)? loadPhotosByCategory,
     TResult? Function(_LoadMorePhotosByCategory value)?
         loadMorePhotosByCategory,
+    TResult? Function(_LoadPhotosFromLocal value)? loadPhotosFromLocal,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoadPhotosByCategory value)? loadPhotosByCategory,
     TResult Function(_LoadMorePhotosByCategory value)? loadMorePhotosByCategory,
+    TResult Function(_LoadPhotosFromLocal value)? loadPhotosFromLocal,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -73,7 +78,7 @@ abstract class $PhotoEventCopyWith<$Res> {
           PhotoEvent value, $Res Function(PhotoEvent) then) =
       _$PhotoEventCopyWithImpl<$Res, PhotoEvent>;
   @useResult
-  $Res call({String category, int page});
+  $Res call({String category});
 }
 
 /// @nodoc
@@ -92,17 +97,12 @@ class _$PhotoEventCopyWithImpl<$Res, $Val extends PhotoEvent>
   @override
   $Res call({
     Object? category = null,
-    Object? page = null,
   }) {
     return _then(_value.copyWith(
       category: null == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as String,
-      page: null == page
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
-              as int,
     ) as $Val);
   }
 }
@@ -192,6 +192,7 @@ class _$LoadPhotosByCategoryImpl implements _LoadPhotosByCategory {
     required TResult Function(String category, int page) loadPhotosByCategory,
     required TResult Function(String category, int page)
         loadMorePhotosByCategory,
+    required TResult Function(String category) loadPhotosFromLocal,
   }) {
     return loadPhotosByCategory(category, page);
   }
@@ -201,6 +202,7 @@ class _$LoadPhotosByCategoryImpl implements _LoadPhotosByCategory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String category, int page)? loadPhotosByCategory,
     TResult? Function(String category, int page)? loadMorePhotosByCategory,
+    TResult? Function(String category)? loadPhotosFromLocal,
   }) {
     return loadPhotosByCategory?.call(category, page);
   }
@@ -210,6 +212,7 @@ class _$LoadPhotosByCategoryImpl implements _LoadPhotosByCategory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String category, int page)? loadPhotosByCategory,
     TResult Function(String category, int page)? loadMorePhotosByCategory,
+    TResult Function(String category)? loadPhotosFromLocal,
     required TResult orElse(),
   }) {
     if (loadPhotosByCategory != null) {
@@ -224,6 +227,7 @@ class _$LoadPhotosByCategoryImpl implements _LoadPhotosByCategory {
     required TResult Function(_LoadPhotosByCategory value) loadPhotosByCategory,
     required TResult Function(_LoadMorePhotosByCategory value)
         loadMorePhotosByCategory,
+    required TResult Function(_LoadPhotosFromLocal value) loadPhotosFromLocal,
   }) {
     return loadPhotosByCategory(this);
   }
@@ -234,6 +238,7 @@ class _$LoadPhotosByCategoryImpl implements _LoadPhotosByCategory {
     TResult? Function(_LoadPhotosByCategory value)? loadPhotosByCategory,
     TResult? Function(_LoadMorePhotosByCategory value)?
         loadMorePhotosByCategory,
+    TResult? Function(_LoadPhotosFromLocal value)? loadPhotosFromLocal,
   }) {
     return loadPhotosByCategory?.call(this);
   }
@@ -243,6 +248,7 @@ class _$LoadPhotosByCategoryImpl implements _LoadPhotosByCategory {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoadPhotosByCategory value)? loadPhotosByCategory,
     TResult Function(_LoadMorePhotosByCategory value)? loadMorePhotosByCategory,
+    TResult Function(_LoadPhotosFromLocal value)? loadPhotosFromLocal,
     required TResult orElse(),
   }) {
     if (loadPhotosByCategory != null) {
@@ -259,7 +265,6 @@ abstract class _LoadPhotosByCategory implements PhotoEvent {
 
   @override
   String get category;
-  @override
   int get page;
 
   /// Create a copy of PhotoEvent
@@ -356,6 +361,7 @@ class _$LoadMorePhotosByCategoryImpl implements _LoadMorePhotosByCategory {
     required TResult Function(String category, int page) loadPhotosByCategory,
     required TResult Function(String category, int page)
         loadMorePhotosByCategory,
+    required TResult Function(String category) loadPhotosFromLocal,
   }) {
     return loadMorePhotosByCategory(category, page);
   }
@@ -365,6 +371,7 @@ class _$LoadMorePhotosByCategoryImpl implements _LoadMorePhotosByCategory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String category, int page)? loadPhotosByCategory,
     TResult? Function(String category, int page)? loadMorePhotosByCategory,
+    TResult? Function(String category)? loadPhotosFromLocal,
   }) {
     return loadMorePhotosByCategory?.call(category, page);
   }
@@ -374,6 +381,7 @@ class _$LoadMorePhotosByCategoryImpl implements _LoadMorePhotosByCategory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String category, int page)? loadPhotosByCategory,
     TResult Function(String category, int page)? loadMorePhotosByCategory,
+    TResult Function(String category)? loadPhotosFromLocal,
     required TResult orElse(),
   }) {
     if (loadMorePhotosByCategory != null) {
@@ -388,6 +396,7 @@ class _$LoadMorePhotosByCategoryImpl implements _LoadMorePhotosByCategory {
     required TResult Function(_LoadPhotosByCategory value) loadPhotosByCategory,
     required TResult Function(_LoadMorePhotosByCategory value)
         loadMorePhotosByCategory,
+    required TResult Function(_LoadPhotosFromLocal value) loadPhotosFromLocal,
   }) {
     return loadMorePhotosByCategory(this);
   }
@@ -398,6 +407,7 @@ class _$LoadMorePhotosByCategoryImpl implements _LoadMorePhotosByCategory {
     TResult? Function(_LoadPhotosByCategory value)? loadPhotosByCategory,
     TResult? Function(_LoadMorePhotosByCategory value)?
         loadMorePhotosByCategory,
+    TResult? Function(_LoadPhotosFromLocal value)? loadPhotosFromLocal,
   }) {
     return loadMorePhotosByCategory?.call(this);
   }
@@ -407,6 +417,7 @@ class _$LoadMorePhotosByCategoryImpl implements _LoadMorePhotosByCategory {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoadPhotosByCategory value)? loadPhotosByCategory,
     TResult Function(_LoadMorePhotosByCategory value)? loadMorePhotosByCategory,
+    TResult Function(_LoadPhotosFromLocal value)? loadPhotosFromLocal,
     required TResult orElse(),
   }) {
     if (loadMorePhotosByCategory != null) {
@@ -423,7 +434,6 @@ abstract class _LoadMorePhotosByCategory implements PhotoEvent {
 
   @override
   String get category;
-  @override
   int get page;
 
   /// Create a copy of PhotoEvent
@@ -432,6 +442,162 @@ abstract class _LoadMorePhotosByCategory implements PhotoEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoadMorePhotosByCategoryImplCopyWith<_$LoadMorePhotosByCategoryImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$LoadPhotosFromLocalImplCopyWith<$Res>
+    implements $PhotoEventCopyWith<$Res> {
+  factory _$$LoadPhotosFromLocalImplCopyWith(_$LoadPhotosFromLocalImpl value,
+          $Res Function(_$LoadPhotosFromLocalImpl) then) =
+      __$$LoadPhotosFromLocalImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String category});
+}
+
+/// @nodoc
+class __$$LoadPhotosFromLocalImplCopyWithImpl<$Res>
+    extends _$PhotoEventCopyWithImpl<$Res, _$LoadPhotosFromLocalImpl>
+    implements _$$LoadPhotosFromLocalImplCopyWith<$Res> {
+  __$$LoadPhotosFromLocalImplCopyWithImpl(_$LoadPhotosFromLocalImpl _value,
+      $Res Function(_$LoadPhotosFromLocalImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of PhotoEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? category = null,
+  }) {
+    return _then(_$LoadPhotosFromLocalImpl(
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$LoadPhotosFromLocalImpl implements _LoadPhotosFromLocal {
+  const _$LoadPhotosFromLocalImpl({required this.category});
+
+  @override
+  final String category;
+
+  @override
+  String toString() {
+    return 'PhotoEvent.loadPhotosFromLocal(category: $category)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LoadPhotosFromLocalImpl &&
+            (identical(other.category, category) ||
+                other.category == category));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, category);
+
+  /// Create a copy of PhotoEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LoadPhotosFromLocalImplCopyWith<_$LoadPhotosFromLocalImpl> get copyWith =>
+      __$$LoadPhotosFromLocalImplCopyWithImpl<_$LoadPhotosFromLocalImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String category, int page) loadPhotosByCategory,
+    required TResult Function(String category, int page)
+        loadMorePhotosByCategory,
+    required TResult Function(String category) loadPhotosFromLocal,
+  }) {
+    return loadPhotosFromLocal(category);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String category, int page)? loadPhotosByCategory,
+    TResult? Function(String category, int page)? loadMorePhotosByCategory,
+    TResult? Function(String category)? loadPhotosFromLocal,
+  }) {
+    return loadPhotosFromLocal?.call(category);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String category, int page)? loadPhotosByCategory,
+    TResult Function(String category, int page)? loadMorePhotosByCategory,
+    TResult Function(String category)? loadPhotosFromLocal,
+    required TResult orElse(),
+  }) {
+    if (loadPhotosFromLocal != null) {
+      return loadPhotosFromLocal(category);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadPhotosByCategory value) loadPhotosByCategory,
+    required TResult Function(_LoadMorePhotosByCategory value)
+        loadMorePhotosByCategory,
+    required TResult Function(_LoadPhotosFromLocal value) loadPhotosFromLocal,
+  }) {
+    return loadPhotosFromLocal(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadPhotosByCategory value)? loadPhotosByCategory,
+    TResult? Function(_LoadMorePhotosByCategory value)?
+        loadMorePhotosByCategory,
+    TResult? Function(_LoadPhotosFromLocal value)? loadPhotosFromLocal,
+  }) {
+    return loadPhotosFromLocal?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadPhotosByCategory value)? loadPhotosByCategory,
+    TResult Function(_LoadMorePhotosByCategory value)? loadMorePhotosByCategory,
+    TResult Function(_LoadPhotosFromLocal value)? loadPhotosFromLocal,
+    required TResult orElse(),
+  }) {
+    if (loadPhotosFromLocal != null) {
+      return loadPhotosFromLocal(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _LoadPhotosFromLocal implements PhotoEvent {
+  const factory _LoadPhotosFromLocal({required final String category}) =
+      _$LoadPhotosFromLocalImpl;
+
+  @override
+  String get category;
+
+  /// Create a copy of PhotoEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LoadPhotosFromLocalImplCopyWith<_$LoadPhotosFromLocalImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc

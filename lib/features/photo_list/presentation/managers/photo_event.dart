@@ -13,4 +13,8 @@ class PhotoEvent with _$PhotoEvent {
     required String category,
     required int page,
   }) = _LoadMorePhotosByCategory;
+
+  const factory PhotoEvent.loadPhotosFromLocal({
+    required String category,
+  }) = _LoadPhotosFromLocal;
 }
