@@ -42,6 +42,7 @@ dependencies:
   equatable: ^2.0.5
   collapsible_app_bar: ^0.1.4
   freezed_annotation: ^2.2.0
+  connectivity_plus: ^2.3.0
 
 
 dev_dependencies:

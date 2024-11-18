@@ -1,4 +1,5 @@
 import 'package:awesome_app/features/home/managers/show_item_bloc.dart';
+import 'package:awesome_app/features/shared/connectivity_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +11,7 @@ import '../widgets/photo_item.dart';
 class PhotoListPage extends StatefulWidget {
   final String category;
 
-  const PhotoListPage({Key? key, required this.category}) : super(key: key);
+  const PhotoListPage({super.key, required this.category});
 
   @override
   _PhotoListPageState createState() => _PhotoListPageState();
@@ -61,41 +62,49 @@ class _PhotoListPageState extends State<PhotoListPage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 80),
-      child: BlocBuilder<PhotoBloc, PhotoState>(
-        builder: (context, state) {
-          return state.when(
-            // Loading state
-            loading: () => const Center(child: CircularProgressIndicator()),
-
-            // Error state
-            error: (message) => Center(
-              child: Text(
-                message,
-                style: const TextStyle(color: Colors.red),
-              ),
-            ),
-
-            // Loaded state
-            loaded: (photos, hasReachedMax) {
-              if (photos.isEmpty) {
-                return const Center(child: Text('No photos available.'));
-              }
-              return RefreshIndicator(
-                onRefresh: () async {
-                  context.read<PhotoBloc>().add(PhotoEvent.loadPhotosByCategory(category: widget.category, page: 1));
-                },
-                child: BlocBuilder<ShowItemBloc, ShowItemState>(builder: (context, stateShowItem) {
-                  return stateShowItem.when(
-                      show: (isGrid) =>
-                          (isGrid) ? _buildGridView(photos, hasReachedMax) : _buildListView(photos, hasReachedMax));
-                }),
+      child: ConnectivityChecker(
+        internet: (isOffline) {
+          context.read<PhotoBloc>().add(
+                PhotoEvent.loadPhotosByCategory(category: widget.category, page: 1),
               );
-            },
-
-            // Default case
-            initial: () => const SizedBox.shrink(),
-          );
         },
+        offlineWidget: const Center(child: Text('No internet connection.', style: TextStyle(color: Colors.red))),
+        child: BlocBuilder<PhotoBloc, PhotoState>(
+          builder: (context, state) {
+            return state.when(
+              // Loading state
+              loading: () => const Center(child: CircularProgressIndicator()),
+
+              // Error state
+              error: (message) => Center(
+                child: Text(
+                  message,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
+
+              // Loaded state
+              loaded: (photos, hasReachedMax) {
+                if (photos.isEmpty) {
+                  return const Center(child: Text('No photos available.'));
+                }
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<PhotoBloc>().add(PhotoEvent.loadPhotosByCategory(category: widget.category, page: 1));
+                  },
+                  child: BlocBuilder<ShowItemBloc, ShowItemState>(builder: (context, stateShowItem) {
+                    return stateShowItem.when(
+                        show: (isGrid) =>
+                            (isGrid) ? _buildGridView(photos, hasReachedMax) : _buildListView(photos, hasReachedMax));
+                  }),
+                );
+              },
+
+              // Default case
+              initial: () => const SizedBox.shrink(),
+            );
+          },
+        ),
       ),
     );
   }

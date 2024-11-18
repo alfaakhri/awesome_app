@@ -67,9 +67,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       children: [
         Image.network(
           'https://fastly.picsum.photos/id/326/4928/3264.jpg?hmac=lJA_LBhuSUZpPbFFE6vjjSjIWzpaqjZpR9vV9MkZfJw',
+          fit: BoxFit.cover,
           height: 200,
           width: double.infinity,
-          fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return const Center(child: CircularProgressIndicator());
+          },
+          errorBuilder: (context, error, stackTrace) {
+            return const Center(child: Icon(Icons.error));
+          },
         ),
         Container(
           alignment: Alignment.centerLeft,
