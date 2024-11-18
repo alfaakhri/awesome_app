@@ -1,15 +1,16 @@
+import 'package:awesome_app/features/home/managers/show_item_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../data/models/photo_model.dart';
 import '../managers/photo_bloc.dart';
-import '../managers/photo_event.dart';
-import '../managers/photo_state.dart';
 import '../widgets/photo_item.dart';
 
 class PhotoListPage extends StatefulWidget {
-  const PhotoListPage({Key? key}) : super(key: key);
+  final String category;
+
+  const PhotoListPage({Key? key, required this.category}) : super(key: key);
 
   @override
   _PhotoListPageState createState() => _PhotoListPageState();
@@ -17,12 +18,12 @@ class PhotoListPage extends StatefulWidget {
 
 class _PhotoListPageState extends State<PhotoListPage> {
   final ScrollController _scrollController = ScrollController();
-  bool _isGrid = true; // Default view is Grid
 
   @override
   void initState() {
     super.initState();
-    context.read<PhotoBloc>().add(const LoadPhotos(1)); // Load initial data
+    // Trigger the initial event to load photos
+    context.read<PhotoBloc>().add(PhotoEvent.loadPhotosByCategory(category: widget.category, page: 1));
     _scrollController.addListener(_onScroll);
   }
 
@@ -35,56 +36,65 @@ class _PhotoListPageState extends State<PhotoListPage> {
   void _onScroll() {
     if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
       final currentState = context.read<PhotoBloc>().state;
-      if (currentState is PhotoLoaded) {
-        context.read<PhotoBloc>().add(LoadMorePhotos(currentState.photos.length ~/ 10 + 1));
-      }
+
+      // Memeriksa apakah currentState adalah PhotoLoaded
+      currentState.when(
+        loading: () {}, // Handle loading state (tidak diperlukan di sini)
+        loaded: (photos, hasReachedMax) {
+          if (!hasReachedMax) {
+            // Fetch more photos if not at the max
+            context.read<PhotoBloc>().add(
+                  PhotoEvent.loadMorePhotosByCategory(
+                    category: widget.category,
+                    page: photos.length ~/ 10 + 1,
+                  ),
+                );
+          }
+        },
+        error: (message) {},
+        initial: () {},
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Awesome App'),
-        actions: [
-          IconButton(
-            icon: Icon(_isGrid ? Icons.list : Icons.grid_view),
-            onPressed: () {
-              setState(() {
-                _isGrid = !_isGrid; // Toggle view mode
-              });
-            },
-          ),
-        ],
-      ),
-      body: BlocBuilder<PhotoBloc, PhotoState>(
+    return Padding(
+      padding: const EdgeInsets.only(top: 80),
+      child: BlocBuilder<PhotoBloc, PhotoState>(
         builder: (context, state) {
-          if (state is PhotoLoading && state.props.isEmpty) {
-            // Initial loading
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is PhotoError) {
+          return state.when(
+            // Loading state
+            loading: () => const Center(child: CircularProgressIndicator()),
+
             // Error state
-            return Center(
+            error: (message) => Center(
               child: Text(
-                state.message,
+                message,
                 style: const TextStyle(color: Colors.red),
               ),
-            );
-          } else if (state is PhotoLoaded) {
+            ),
+
             // Loaded state
-            final photos = state.photos;
-            if (photos.isEmpty) {
-              return const Center(child: Text('No photos available.'));
-            }
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<PhotoBloc>().add(const LoadPhotos(1));
-              },
-              child:
-                  _isGrid ? _buildGridView(photos, state.hasReachedMax) : _buildListView(photos, state.hasReachedMax),
-            );
-          }
-          return const SizedBox.shrink(); // Default case
+            loaded: (photos, hasReachedMax) {
+              if (photos.isEmpty) {
+                return const Center(child: Text('No photos available.'));
+              }
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<PhotoBloc>().add(PhotoEvent.loadPhotosByCategory(category: widget.category, page: 1));
+                },
+                child: BlocBuilder<ShowItemBloc, ShowItemState>(builder: (context, stateShowItem) {
+                  return stateShowItem.when(
+                      show: (isGrid) =>
+                          (isGrid) ? _buildGridView(photos, hasReachedMax) : _buildListView(photos, hasReachedMax));
+                }),
+              );
+            },
+
+            // Default case
+            initial: () => const SizedBox.shrink(),
+          );
         },
       ),
     );

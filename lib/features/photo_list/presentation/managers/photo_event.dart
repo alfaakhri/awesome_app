@@ -1,28 +1,16 @@
-import 'package:equatable/equatable.dart';
+part of 'photo_bloc.dart';
 
-abstract class PhotoEvent extends Equatable {
-  const PhotoEvent();
+@freezed
+class PhotoEvent with _$PhotoEvent {
+  /// Event untuk memuat foto berdasarkan kategori (halaman pertama)
+  const factory PhotoEvent.loadPhotosByCategory({
+    required String category,
+    required int page,
+  }) = _LoadPhotosByCategory;
 
-  @override
-  List<Object?> get props => [];
-}
-
-// Event untuk memuat foto pertama kali
-class LoadPhotos extends PhotoEvent {
-  final int page;
-
-  const LoadPhotos(this.page);
-
-  @override
-  List<Object?> get props => [page];
-}
-
-// Event untuk memuat lebih banyak foto (infinite scroll)
-class LoadMorePhotos extends PhotoEvent {
-  final int page;
-
-  const LoadMorePhotos(this.page);
-
-  @override
-  List<Object?> get props => [page];
+  /// Event untuk memuat lebih banyak foto berdasarkan kategori (infinite scroll)
+  const factory PhotoEvent.loadMorePhotosByCategory({
+    required String category,
+    required int page,
+  }) = _LoadMorePhotosByCategory;
 }

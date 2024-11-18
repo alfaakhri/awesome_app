@@ -6,9 +6,10 @@ class PhotoService {
 
   PhotoService({required this.apiClient});
 
-  Future<List<PhotoModel>> fetchPhotos(int page) async {
+  Future<List<PhotoModel>> fetchPhotos(String category, int page) async {
     try {
-      final data = await apiClient.get('/curated', queryParameters: {'page': '$page', 'per_page': '10'});
+      final data =
+          await apiClient.get('/search', queryParameters: {'query': category, 'page': '$page', 'per_page': '10'});
       final List photosData = data['photos'];
 
       return photosData.map((json) => PhotoModel.fromJson(json)).toList();

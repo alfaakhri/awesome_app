@@ -1,14 +1,15 @@
+import 'package:awesome_app/features/home/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'core/api_clients.dart';
+import 'features/home/managers/show_item_bloc.dart';
 import 'features/photo_detail/presentation/pages/photo_detail_page.dart';
 import 'features/photo_list/data/models/photo_model.dart';
 import 'features/photo_list/data/services/photo_service.dart';
 import 'features/photo_list/domain/repository/photo_repository.dart';
 import 'features/photo_list/presentation/managers/photo_bloc.dart';
-import 'features/photo_list/presentation/pages/photo_list_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: (context) => ShowItemBloc(),
+        ),
+        BlocProvider(
           create: (context) => PhotoBloc(photoRepository),
         ),
       ],
@@ -46,17 +50,15 @@ class MyApp extends StatelessWidget {
 
   GoRouter get _router => GoRouter(
         routes: [
-          GoRoute(
-            path: '/',
-            builder: (context, state) => const PhotoListPage(),
-          ),
-          GoRoute(
-            path: '/detail',
-            builder: (context, state) {
-              final photo = state.extra as PhotoModel;
-              return PhotoDetailPage(photo: photo);
-            },
-          ),
+          GoRoute(path: '/', builder: (context, state) => const HomePage(), routes: [
+            GoRoute(
+              path: '/detail',
+              builder: (context, state) {
+                final photo = state.extra as PhotoModel;
+                return PhotoDetailPage(photo: photo);
+              },
+            ),
+          ]),
         ],
       );
 }

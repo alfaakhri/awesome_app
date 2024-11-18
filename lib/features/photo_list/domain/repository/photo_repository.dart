@@ -8,10 +8,10 @@ class PhotoRepository {
   PhotoRepository({required this.photoService});
 
   // Metode untuk fetch data foto dari PhotoService
-  Future<List<PhotoModel>> getPhotos(int page) async {
+  Future<List<PhotoModel>> getPhotos(String category, int page) async {
     try {
       // Mengambil data dari PhotoService
-      return await photoService.fetchPhotos(page);
+      return await photoService.fetchPhotos(category, page);
     } catch (e) {
       throw Exception('Failed to fetch photos: $e');
     }
