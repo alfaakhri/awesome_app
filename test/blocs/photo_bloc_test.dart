@@ -13,7 +13,7 @@ void main() {
 
   setUp(() {
     mockPhotoRepository = MockPhotoRepository();
-    photoBloc = PhotoBloc(mockPhotoRepository);
+    photoBloc = PhotoBloc(photoRepository: mockPhotoRepository);
   });
 
   group('PhotoBloc', () {
@@ -52,7 +52,9 @@ void main() {
         );
         return photoBloc;
       },
-      act: (bloc) => bloc.add(const PhotoEvent.loadPhotosByCategory(category: 'food', page: 1)),
+      act: (bloc) {
+        bloc.add(const PhotoEvent.loadPhotosByCategory(category: 'food', page: 1));
+      },
       expect: () => [
         const PhotoState.loading(),
         PhotoState.loaded(photos: [testPhotoModel], hasReachedMax: true),
