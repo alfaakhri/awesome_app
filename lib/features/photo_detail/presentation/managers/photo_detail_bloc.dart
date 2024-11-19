@@ -9,12 +9,14 @@ part 'photo_detail_event.dart';
 part 'photo_detail_state.dart';
 
 class PhotoDetailBloc extends Bloc<PhotoDetailEvent, PhotoDetailState> {
-  final PhotoDetailRepository photoDetailRepository;
-  PhotoDetailBloc(this.photoDetailRepository) : super(const PhotoDetailState.initial()) {
+  final PhotoDetailRepository _photoDetailRepository;
+  PhotoDetailBloc({PhotoDetailRepository? photoDetailRepository})
+      : _photoDetailRepository = photoDetailRepository ?? PhotoDetailRepository(),
+        super(const PhotoDetailState.initial()) {
     on<_GetPhotoById>((event, emit) async {
       try {
         emit(const PhotoDetailState.loading());
-        final photos = await photoDetailRepository.getPhotos(
+        final photos = await _photoDetailRepository.getPhotos(
           event.photoId,
         );
         emit(PhotoDetailState.loaded(photos: photos));

@@ -9,13 +9,15 @@ part 'photo_event.dart';
 part 'photo_state.dart';
 
 class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
-  final PhotoRepository photoRepository;
+  final PhotoRepository _photoRepository;
 
-  PhotoBloc(this.photoRepository) : super(const PhotoState.initial()) {
+  PhotoBloc({PhotoRepository? photoRepository})
+      : _photoRepository = photoRepository ?? PhotoRepository(),
+        super(const PhotoState.initial()) {
     on<_LoadPhotosByCategory>((event, emit) async {
       try {
         emit(const PhotoState.loading());
-        final photos = await photoRepository.getPhotos(
+        final photos = await _photoRepository.getPhotos(
           event.category,
           event.page,
         );
@@ -28,7 +30,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
       final currentState = state;
       if (currentState is _Loaded && !currentState.hasReachedMax) {
         try {
-          final photos = await photoRepository.getPhotos(
+          final photos = await _photoRepository.getPhotos(
             event.category,
             event.page,
           );

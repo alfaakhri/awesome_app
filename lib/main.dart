@@ -5,16 +5,17 @@ import 'package:go_router/go_router.dart';
 
 import 'core/api_clients.dart';
 import 'features/home/managers/show_item_bloc.dart';
-import 'features/photo_detail/data/services/photo_detail_service.dart';
-import 'features/photo_detail/domain/repository/photo_detail_repository.dart';
 import 'features/photo_detail/presentation/managers/photo_detail_bloc.dart';
 import 'features/photo_detail/presentation/pages/photo_detail_page.dart';
 import 'features/photo_list/data/models/photo_model.dart';
-import 'features/photo_list/data/services/photo_service.dart';
-import 'features/photo_list/domain/repository/photo_repository.dart';
 import 'features/photo_list/presentation/managers/photo_bloc.dart';
 
 void main() {
+  final ApiClient apiClient = ApiClient(
+    baseUrl: 'https://api.pexels.com/v1',
+    headers: {'Authorization': '563492ad6f91700001000001768b3a098efb4912a758163e6ef35e51'},
+  );
+
   runApp(const MyApp());
 }
 
@@ -23,27 +24,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Dependency injection setup
-    final ApiClient apiClient = ApiClient(
-      baseUrl: 'https://api.pexels.com/v1',
-      headers: {'Authorization': '563492ad6f91700001000001768b3a098efb4912a758163e6ef35e51'},
-    );
-    final PhotoService photoService = PhotoService(apiClient: apiClient);
-    final PhotoDetailService photoDetailService = PhotoDetailService(apiClient: apiClient);
-
-    final PhotoRepository photoRepository = PhotoRepository(photoService: photoService);
-    final PhotoDetailRepository photoDetailRepository = PhotoDetailRepository(photoService: photoDetailService);
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (context) => ShowItemBloc(),
         ),
         BlocProvider(
-          create: (context) => PhotoBloc(photoRepository),
+          create: (context) => PhotoBloc(),
         ),
         BlocProvider(
-          create: (context) => PhotoDetailBloc(photoDetailRepository),
+          create: (context) => PhotoDetailBloc(),
         ),
       ],
       child: MaterialApp.router(
