@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   show: (isGrid) => IconButton(
                         icon: Icon(isGrid ? Icons.grid_view : Icons.list),
                         onPressed: () {
-                          context.read<ShowItemBloc>().add(ShowItemEvent.option(isGrid ? false : true));
+                          context.read<ShowItemBloc>().add(const ShowItemEvent.option());
                         },
                       ));
             },
@@ -96,12 +96,20 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   ? BlocBuilder<ShowItemBloc, ShowItemState>(
                       builder: (context, state) {
                         return state.when(
-                            show: (isGrid) => IconButton(
-                                  icon: Icon(isGrid ? Icons.grid_view : Icons.list),
-                                  onPressed: () {
-                                    context.read<ShowItemBloc>().add(ShowItemEvent.option(isGrid ? false : true));
-                                  },
-                                ));
+                          show: (isGrid) => AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 3000),
+                            transitionBuilder: (child, animation) {
+                              return ScaleTransition(scale: animation, child: child);
+                            },
+                            child: IconButton(
+                              key: ValueKey<bool>(isGrid), // Unique key for AnimatedSwitcher
+                              icon: Icon(isGrid ? Icons.grid_view : Icons.list),
+                              onPressed: () {
+                                context.read<ShowItemBloc>().add(const ShowItemEvent.option());
+                              },
+                            ),
+                          ),
+                        );
                       },
                     )
                   : const SizedBox.shrink()
