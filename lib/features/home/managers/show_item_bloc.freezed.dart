@@ -16,20 +16,19 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ShowItemEvent {
-  bool get isGrid => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool isGrid) option,
+    required TResult Function() option,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool isGrid)? option,
+    TResult? Function()? option,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool isGrid)? option,
+    TResult Function()? option,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -49,12 +48,6 @@ mixin _$ShowItemEvent {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  /// Create a copy of ShowItemEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $ShowItemEventCopyWith<ShowItemEvent> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -62,8 +55,6 @@ abstract class $ShowItemEventCopyWith<$Res> {
   factory $ShowItemEventCopyWith(
           ShowItemEvent value, $Res Function(ShowItemEvent) then) =
       _$ShowItemEventCopyWithImpl<$Res, ShowItemEvent>;
-  @useResult
-  $Res call({bool isGrid});
 }
 
 /// @nodoc
@@ -78,29 +69,13 @@ class _$ShowItemEventCopyWithImpl<$Res, $Val extends ShowItemEvent>
 
   /// Create a copy of ShowItemEvent
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isGrid = null,
-  }) {
-    return _then(_value.copyWith(
-      isGrid: null == isGrid
-          ? _value.isGrid
-          : isGrid // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$OptionImplCopyWith<$Res>
-    implements $ShowItemEventCopyWith<$Res> {
+abstract class _$$OptionImplCopyWith<$Res> {
   factory _$$OptionImplCopyWith(
           _$OptionImpl value, $Res Function(_$OptionImpl) then) =
       __$$OptionImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({bool isGrid});
 }
 
 /// @nodoc
@@ -113,76 +88,51 @@ class __$$OptionImplCopyWithImpl<$Res>
 
   /// Create a copy of ShowItemEvent
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isGrid = null,
-  }) {
-    return _then(_$OptionImpl(
-      null == isGrid
-          ? _value.isGrid
-          : isGrid // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$OptionImpl implements _Option {
-  const _$OptionImpl(this.isGrid);
-
-  @override
-  final bool isGrid;
+  const _$OptionImpl();
 
   @override
   String toString() {
-    return 'ShowItemEvent.option(isGrid: $isGrid)';
+    return 'ShowItemEvent.option()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$OptionImpl &&
-            (identical(other.isGrid, isGrid) || other.isGrid == isGrid));
+        (other.runtimeType == runtimeType && other is _$OptionImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isGrid);
-
-  /// Create a copy of ShowItemEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$OptionImplCopyWith<_$OptionImpl> get copyWith =>
-      __$$OptionImplCopyWithImpl<_$OptionImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool isGrid) option,
+    required TResult Function() option,
   }) {
-    return option(isGrid);
+    return option();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool isGrid)? option,
+    TResult? Function()? option,
   }) {
-    return option?.call(isGrid);
+    return option?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool isGrid)? option,
+    TResult Function()? option,
     required TResult orElse(),
   }) {
     if (option != null) {
-      return option(isGrid);
+      return option();
     }
     return orElse();
   }
@@ -217,17 +167,7 @@ class _$OptionImpl implements _Option {
 }
 
 abstract class _Option implements ShowItemEvent {
-  const factory _Option(final bool isGrid) = _$OptionImpl;
-
-  @override
-  bool get isGrid;
-
-  /// Create a copy of ShowItemEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$OptionImplCopyWith<_$OptionImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory _Option() = _$OptionImpl;
 }
 
 /// @nodoc
