@@ -3,6 +3,7 @@ import 'package:awesome_app/features/shared/connectivity_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../data/models/photo_model.dart';
 import '../managers/photo_bloc.dart';
@@ -17,12 +18,26 @@ class PhotoListPage extends StatefulWidget {
   _PhotoListPageState createState() => _PhotoListPageState();
 }
 
-class _PhotoListPageState extends State<PhotoListPage> {
+class _PhotoListPageState extends State<PhotoListPage> with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
+    // Animation setup
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeIn,
+    );
+
+    // Trigger the initial animation
+    _animationController.forward();
     // Trigger the initial event to load photos
     context.read<PhotoBloc>().add(PhotoEvent.loadPhotosByCategory(category: widget.category, page: 1));
     _scrollController.addListener(_onScroll);
@@ -31,6 +46,7 @@ class _PhotoListPageState extends State<PhotoListPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -118,21 +134,25 @@ class _PhotoListPageState extends State<PhotoListPage> {
         mainAxisSpacing: 8,
       ),
       padding: const EdgeInsets.all(8),
-      itemCount: hasReachedMax ? photos.length : photos.length + 1,
+      itemCount: hasReachedMax ? photos.length : photos.length + 2, // Tambahkan skeleton loader
       itemBuilder: (context, index) {
         if (index >= photos.length) {
-          return const Center(child: CircularProgressIndicator());
+          // Skeleton loading state
+          return _buildSkeletonGridLoader();
         }
         final photo = photos[index];
-        return GestureDetector(
-          onTap: () => context.push(
-            '/detail',
-            extra: photo, // Pass PhotoModel as extra
+        return FadeTransition(
+          opacity: _fadeAnimation,
+          child: GestureDetector(
+            onTap: () => context.push(
+              '/detail',
+              extra: photo, // Pass PhotoModel as extra
+            ),
+            child: PhotoItem(
+              imageUrl: photo.src.portrait,
+              photographerName: photo.photographer,
+            ), // Custom widget to display photo
           ),
-          child: PhotoItem(
-            imageUrl: photo.src.portrait,
-            photographerName: photo.photographer,
-          ), // Custom widget to display photo
         );
       },
     );
@@ -142,25 +162,59 @@ class _PhotoListPageState extends State<PhotoListPage> {
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.all(8),
-      itemCount: hasReachedMax ? photos.length : photos.length + 1,
+      itemCount: hasReachedMax ? photos.length : photos.length + 1, // Tambahkan skeleton loader
       itemBuilder: (context, index) {
         if (index >= photos.length) {
-          return const Center(child: CircularProgressIndicator());
+          return _buildSkeletonListLoader();
         }
         final photo = photos[index];
-        return GestureDetector(
-            onTap: () => context.push(
-                  '/detail',
-                  extra: photo, // Pass PhotoModel as extra
-                ),
-            child: SizedBox(
-              height: 250,
-              child: PhotoItem(
-                imageUrl: photo.src.landscape,
-                photographerName: photo.photographer,
-              ), // ), // Custom widget to display photo
-            ));
+        return FadeTransition(
+          opacity: _fadeAnimation,
+          child: GestureDetector(
+              onTap: () => context.push(
+                    '/detail',
+                    extra: photo, // Pass PhotoModel as extra
+                  ),
+              child: SizedBox(
+                height: 250,
+                child: PhotoItem(
+                  imageUrl: photo.src.landscape,
+                  photographerName: photo.photographer,
+                ), // ), // Custom widget to display photo
+              )),
+        );
       },
+    );
+  }
+
+  Widget _buildSkeletonGridLoader() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Container(
+        height: 200, // Sesuaikan tinggi skeleton dengan ukuran PhotoItem
+        decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      ),
+    );
+  }
+
+  Widget _buildSkeletonListLoader() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Container(
+        width: double.infinity,
+        height: 200, // Sesuaikan tinggi skeleton dengan ukuran PhotoItem
+        decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      ),
     );
   }
 }

@@ -43,6 +43,7 @@ dependencies:
   collapsible_app_bar: ^0.1.4
   freezed_annotation: ^2.2.0
   connectivity_plus: ^2.3.0
+  shimmer: ^3.0.0
 
 
 dev_dependencies:
